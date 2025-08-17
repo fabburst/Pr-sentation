@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +11,10 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #e5f5ff; /* Un bleu très doux pour le fond */
+        }
+        body.dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
         }
 
         /* Style des blocs de phrase */
@@ -73,6 +78,11 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             position: relative;
         }
+        .dark .modal-content {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+
 
         /* Styles pour l'écran de victoire */
         .victory-modal {
@@ -88,6 +98,9 @@
             align-items: center;
             z-index: 100;
         }
+        .dark .victory-modal {
+             background-color: #064e3b;
+        }
 
         /* Barre de boutons fixe en bas */
         .fixed-bottom-bar {
@@ -99,6 +112,10 @@
             padding: 1rem;
             box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
             z-index: 40;
+        }
+        .dark .fixed-bottom-bar {
+             background-color: #2d3748;
+             box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
         }
 
         /* Ajuste le padding du corps pour que le contenu ne soit pas caché par la barre fixe */
@@ -116,45 +133,106 @@
             flex-grow: 1;
             overflow-y: auto;
         }
-        
+
+        /* Style de base pour les éléments de l'interface principale */
+        .main-ui-element {
+            background-color: #ffffff;
+            color: #334155;
+        }
+        .dark .main-ui-element {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .dark .bg-slate-100 {
+            background-color: #4a5568;
+        }
+        .dark .bg-slate-50 {
+            background-color: #4a5568;
+        }
+        .dark .bg-white {
+            background-color: #2d3748;
+        }
+        .dark .text-slate-800 {
+            color: #e2e8f0;
+        }
+        .dark .text-slate-600 {
+            color: #a0aec0;
+        }
+        .dark .text-slate-700 {
+            color: #e2e8f0;
+        }
+        .dark .border-slate-300 {
+            border-color: #4a5568;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8 flex flex-col items-center min-h-screen">
 
-    <div id="main-container" class="bg-white p-6 sm:p-10 rounded-3xl shadow-2xl max-w-lg w-full text-center relative">
-        <!-- Menu burger -->
-        <button id="menu-button" class="absolute top-4 right-4 p-2 rounded-full text-slate-500 hover:bg-slate-100 transition-colors duration-200 z-20">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-        </button>
+    <div id="main-container" class="main-ui-element p-6 sm:p-10 rounded-3xl shadow-2xl max-w-lg w-full text-center relative lg:flex lg:flex-grow lg:flex-col lg:max-w-none">
+        <!-- Boutons en haut à droite -->
+        <div class="absolute top-4 right-4 flex space-x-2 z-20">
+            <!-- Bouton Recommencer -->
+            <button id="restart-button" class="p-2 rounded-full text-slate-500 hover:bg-slate-100 transition-colors duration-200">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.836 12.036-1.503-1.503M20 9V4h-5m0 5L4.707 19.293a1 1 0 000 1.414l1.503 1.503a1 1 0 001.414 0L19.293 6.707a1 1 0 000-1.414z" />
+                </svg>
+            </button>
+            <!-- Bouton menu burger -->
+            <button id="menu-button" class="p-2 rounded-full text-slate-500 hover:bg-slate-100 transition-colors duration-200">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
         <!-- Menu caché par défaut -->
-        <div id="main-menu" class="absolute top-16 right-4 bg-white p-4 rounded-xl shadow-lg transition-all duration-300 transform scale-0 origin-top-right z-30 hidden">
+        <div id="main-menu" class="absolute top-16 right-4 main-ui-element p-4 rounded-xl shadow-lg transition-all duration-300 transform scale-0 origin-top-right z-30 hidden">
             <label class="flex items-center space-x-2 cursor-pointer mb-2">
-                <span class="text-slate-700">Vibration de victoire</span>
+                <span class="text-slate-700 dark:text-slate-200">Vibration de victoire</span>
                 <input type="checkbox" id="vibration-toggle" class="form-checkbox text-blue-600 rounded" checked>
             </label>
-            <button id="sessions-button" class="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors duration-200">
+            <label class="flex items-center space-x-2 cursor-pointer mb-2">
+                <span class="text-slate-700 dark:text-slate-200">Mode sombre</span>
+                <input type="checkbox" id="dark-mode-toggle" class="form-checkbox text-blue-600 rounded">
+            </label>
+            <label for="custom-word-count-toggle" class="flex items-center space-x-2 cursor-pointer mt-4">
+                <span class="text-slate-700 dark:text-slate-200">Découpe personnalisée</span>
+                <input type="checkbox" id="custom-word-count-toggle" class="form-checkbox text-blue-600 rounded">
+            </label>
+            <label for="word-count-threshold" class="flex flex-col items-start mt-1">
+                <span class="text-sm text-slate-700 dark:text-slate-200 mb-1">Seuil de mots par phrase :</span>
+                <input type="number" id="word-count-threshold" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" value="10" min="1" disabled>
+            </label>
+            <button id="sessions-button" class="w-full text-left py-2 px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-gray-700 transition-colors duration-200 mt-4">
                 Mes sessions
             </button>
         </div>
         
-        <h1 class="text-3xl font-bold text-slate-800 mb-2">Puzzles de Phrases</h1>
-        <p class="text-slate-600 mb-6">Collez un texte ci-dessous pour créer un puzzle.</p>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Puzzles de Phrases</h1>
+        <p class="text-slate-600 dark:text-slate-400 mb-6">Collez un texte ci-dessous pour créer un puzzle.</p>
 
         <!-- Zone d'input du texte (visible par défaut) -->
         <div id="input-area" class="flex flex-col gap-4 mb-6 show">
-            <textarea id="text-input" class="w-full p-4 border-2 border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200" rows="5" placeholder="Collez votre texte ici..."></textarea>
+            <div class="flex items-center justify-between">
+                <label for="difficulty-select" class="text-sm text-slate-700 dark:text-slate-200">Niveau de difficulté :</label>
+                <select id="difficulty-select" class="p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+                    <option value="easy" selected>Facile (blocs de 4 phrases)</option>
+                    <option value="medium">Moyen (blocs de 3 phrases)</option>
+                    <option value="hard">Difficile (blocs de 2 phrases)</option>
+                    <option value="insane">Insane (1 phrase par bloc)</option>
+                </select>
+            </div>
+            <textarea id="text-input" class="w-full p-4 border-2 border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200 dark:bg-gray-700 dark:border-gray-600" rows="5" placeholder="Collez votre texte ici..."></textarea>
             <button id="generate-button" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-green-700 transition-all duration-300">
                 Générer le puzzle
             </button>
         </div>
 
         <!-- Interface de jeu (cachée par défaut) -->
-        <div id="game-interface" class="flex flex-col gap-6 flex-grow overflow-y-auto hide">
+        <div id="game-interface" class="flex flex-col gap-6 flex-grow overflow-y-auto hide lg:flex-row lg:space-x-8">
             
             <!-- Bouton pour afficher l'indice -->
-            <button id="hint-button" class="absolute top-4 right-16 p-2 rounded-full text-blue-500 hover:text-blue-700 hover:bg-slate-100 transition-colors duration-200 z-20">
+            <button id="hint-button" class="absolute top-4 right-28 p-2 rounded-full text-blue-500 hover:text-blue-700 hover:bg-slate-100 transition-colors duration-200 z-20">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-200" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 4.5c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S8.41 5.5 12 5.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"/>
                   <path d="M12 10.5c-.828 0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5 1.5-.672 1.5-1.5-.672-1.5-1.5-1.5z"/>
@@ -163,17 +241,20 @@
             </button>
             
             <!-- Zone pour les blocs mélangés -->
-            <div class="text-left">
-                <h2 class="text-lg font-bold text-slate-700 mb-2">Blocs à organiser</h2>
-                <div id="scrambled-container" class="flex flex-col gap-3 p-4 bg-slate-100 rounded-lg min-h-[50px]">
+            <div class="text-left flex-1">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-lg font-bold text-slate-700 dark:text-slate-200">Blocs à organiser</h2>
+                    <span id="timer-display" class="text-sm font-semibold text-slate-600 dark:text-slate-400">0s</span>
+                </div>
+                <div id="scrambled-container" class="flex flex-col gap-3 p-4 bg-slate-100 dark:bg-gray-700 rounded-lg min-h-[50px]">
                     <!-- Les blocs mélangés seront ajoutés ici par JavaScript -->
                 </div>
             </div>
 
             <!-- Zone pour la phrase reconstituée -->
-            <div class="text-left">
-                <h2 class="text-lg font-bold text-slate-700 mb-2">Phrase reconstituée</h2>
-                <div id="ordered-container" class="flex flex-col gap-3 p-4 bg-slate-100 rounded-lg min-h-[50px]">
+            <div class="text-left flex-1">
+                <h2 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-2">Phrase reconstituée</h2>
+                <div id="ordered-container" class="flex flex-col gap-3 p-4 bg-slate-100 dark:bg-gray-700 rounded-lg min-h-[50px]">
                     <!-- Les blocs ordonnés seront déplacés ici -->
                 </div>
             </div>
@@ -235,7 +316,7 @@
                         <!-- Les étoiles seront ajoutées par JS -->
                     </div>
                     <h2 class="text-4xl font-extrabold text-green-700">VICTOIRE !</h2>
-                    <p class="text-xl text-green-600 mt-2">Vous avez résolu le puzzle !</p>
+                    <p id="score-display" class="text-xl text-green-600 mt-2">Vous avez résolu le puzzle en X secondes !</p>
                     <button id="next-puzzle-button" class="mt-8 bg-green-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-green-700 transition-all duration-300">
                         Nouveau puzzle
                     </button>
@@ -245,7 +326,7 @@
     </div>
 
     <!-- Barre de boutons fixe en bas -->
-    <div id="fixed-buttons-bar" class="fixed-bottom-bar hide">
+    <div id="fixed-buttons-bar" class="fixed-bottom-bar flex-show">
         <button id="check-button" class="flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300">
             Vérifier la phrase
         </button>
@@ -287,23 +368,116 @@
             const victoryEffect = document.getElementById('victory-effect');
             const nextPuzzleButton = document.getElementById('next-puzzle-button');
             const fixedButtonsBar = document.getElementById('fixed-buttons-bar');
-            
+            const difficultySelect = document.getElementById('difficulty-select');
+            const scoreDisplay = document.getElementById('score-display');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const timerDisplay = document.getElementById('timer-display');
+            const wordCountThresholdInput = document.getElementById('word-count-threshold');
+            const customWordCountToggle = document.getElementById('custom-word-count-toggle');
+            const restartButton = document.getElementById('restart-button');
+
             // --- Données du jeu ---
             let correctPhrase = [];
             let isVibrationEnabled = vibrationToggle.checked;
-            
+            let timer;
+            let startTime;
+
             // Phrase par défaut si l'utilisateur ne rentre rien
             const defaultText = "Un petit pas pour l'homme, un grand pas pour l'humanité. Le plaisir de jouer réside dans la clarté et l'enchaînement des idées.";
 
+            // Gère le thème clair/sombre
+            function applyTheme(isDark) {
+                if (isDark) {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // Charge le thème depuis le localStorage
+            if (localStorage.getItem('theme') === 'dark') {
+                applyTheme(true);
+                darkModeToggle.checked = true;
+            }
+
+            // Écouteur pour le bouton de thème
+            darkModeToggle.addEventListener('change', (e) => {
+                applyTheme(e.target.checked);
+            });
+            
+            // Écouteur pour le seuil de mots personnalisé
+            customWordCountToggle.addEventListener('change', (e) => {
+                wordCountThresholdInput.disabled = !e.target.checked;
+            });
+
+
             // --- Fonctions utilitaires ---
             /**
-             * Découpe un texte en phrases.
-             * Utilise une expression régulière pour capturer les phrases se terminant par ., ?, ou !
+             * Découpe un texte en phrases en fonction du niveau de difficulté.
              */
-            function splitTextIntoSentences(text) {
-                text = text.replace(/([.?!])\s*(?=[A-Z])/g, "$1 ");
-                const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
-                return sentences.map(s => s.trim()).filter(s => s.length > 0);
+            function splitTextIntoSentences(text, difficulty, wordThreshold) {
+                const sentencesWithHyphens = text.split(/(?<=[.!?])\s*(?=[A-Z])|(?<=\r?\n)/g).map(s => s.trim()).filter(s => s.length > 0);
+                
+                let processedSentences = sentencesWithHyphens;
+                
+                if (customWordCountToggle.checked) {
+                    let combinedSentences = [];
+                    let currentSentence = "";
+                    for (let i = 0; i < sentencesWithHyphens.length; i++) {
+                        const sentenceWords = sentencesWithHyphens[i].split(/\s+/).filter(w => w.length > 0);
+                        if (currentSentence.length === 0 || sentenceWords.length >= wordThreshold) {
+                            if (currentSentence.length > 0) {
+                                combinedSentences.push(currentSentence.trim());
+                            }
+                            currentSentence = sentencesWithHyphens[i];
+                        } else {
+                            currentSentence += " " + sentencesWithHyphens[i];
+                        }
+                    }
+                    if (currentSentence.length > 0) {
+                        combinedSentences.push(currentSentence.trim());
+                    }
+                    processedSentences = combinedSentences;
+                }
+
+                let blockCount;
+                if (difficulty === 'easy') {
+                    blockCount = 4;
+                } else if (difficulty === 'medium') {
+                    blockCount = 3;
+                } else if (difficulty === 'hard') {
+                    blockCount = 2;
+                } else { // insane
+                    blockCount = 1;
+                }
+                
+                const blocks = [];
+                let currentBlock = "";
+                for (let i = 0; i < processedSentences.length; i++) {
+                    const sentence = processedSentences[i];
+                    
+                    if (blockCount === 1) {
+                        blocks.push(sentence);
+                    } else {
+                        if (currentBlock.length === 0) {
+                            currentBlock = sentence;
+                        } else if (currentBlock.split(/\s+/).length + sentence.split(/\s+/).length > blockCount) {
+                            if (currentBlock.length > 0) {
+                                blocks.push(currentBlock.trim());
+                            }
+                            currentBlock = sentence;
+                        } else {
+                            currentBlock += " " + sentence;
+                        }
+                    }
+                }
+                if (currentBlock.length > 0 && blockCount !== 1) {
+                    blocks.push(currentBlock.trim());
+                }
+                
+                return blocks;
             }
 
             /**
@@ -311,15 +485,20 @@
              */
             function initializeGame(textToUse) {
                 const text = textToUse || defaultText;
-                correctPhrase = splitTextIntoSentences(text);
+                const difficulty = difficultySelect.value;
+                const wordThreshold = parseInt(wordCountThresholdInput.value, 10);
                 
+                let sentences = splitTextIntoSentences(text, difficulty, wordThreshold);
+                
+                correctPhrase = sentences;
+
                 if (correctPhrase.length < 2) {
                     messageArea.textContent = "Le texte doit contenir au moins deux phrases. Essayez avec un autre texte.";
                     messageArea.style.backgroundColor = '#fee2e2';
                     messageArea.style.color = '#991b1b';
                     messageArea.classList.remove('hidden');
-                    inputArea.classList.remove('show');
-                    inputArea.classList.add('flex-show');
+                    inputArea.classList.remove('hide');
+                    inputArea.classList.add('show');
                     gameInterface.classList.add('hide');
                     fixedButtonsBar.classList.add('hide');
                     return;
@@ -330,7 +509,7 @@
                 orderedContainer.innerHTML = '';
                 scrambledPhrase.forEach(text => {
                     const block = document.createElement('div');
-                    block.className = 'phrase-block bg-white p-4 rounded-lg text-slate-800 text-lg select-none';
+                    block.className = 'phrase-block p-4 rounded-lg text-slate-800 dark:text-slate-200 bg-white dark:bg-gray-800 text-lg select-none';
                     block.textContent = text;
                     const rotation = (Math.random() - 0.5) * 4;
                     block.style.setProperty('--rotation', rotation);
@@ -339,24 +518,32 @@
                 });
 
                 inputArea.classList.remove('show');
-                inputArea.classList.add('hide');
-                gameInterface.classList.remove('hide');
+                inputArea.classList.add('hide'); 
+                gameInterface.classList.remove('hide'); 
                 gameInterface.classList.add('show');
-                fixedButtonsBar.classList.remove('hide');
+                fixedButtonsBar.classList.remove('hide'); 
                 fixedButtonsBar.classList.add('show');
                 messageArea.classList.add('hidden');
+                
+                // Démarre le chronomètre
+                startTime = Date.now();
+                clearInterval(timer); // S'assure que tout timer précédent est arrêté
+                timer = setInterval(() => {
+                    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+                    timerDisplay.textContent = `${timeTaken}s`;
+                }, 1000);
             }
 
             /**
              * Sauvegarde une session dans le localStorage.
-             * @param {string} text - Le texte de la phrase.
              */
-            function saveSession(text) {
+            function saveSession(text, time) {
                 const sessions = JSON.parse(localStorage.getItem('puzzleSessions')) || [];
                 const now = new Date();
                 sessions.push({
                     text: text,
-                    timestamp: now.toISOString()
+                    timestamp: now.toISOString(),
+                    time: time
                 });
                 localStorage.setItem('puzzleSessions', JSON.stringify(sessions));
             }
@@ -368,15 +555,15 @@
                 sessionsList.innerHTML = '';
                 const sessions = JSON.parse(localStorage.getItem('puzzleSessions')) || [];
                 if (sessions.length === 0) {
-                    sessionsList.innerHTML = '<p class="text-slate-500 text-center">Aucune session enregistrée.</p>';
+                    sessionsList.innerHTML = '<p class="text-slate-500 text-center dark:text-slate-400">Aucune session enregistrée.</p>';
                     return;
                 }
                 sessions.forEach((session, index) => {
                     const sessionItem = document.createElement('div');
-                    sessionItem.className = 'p-3 bg-slate-50 rounded-lg flex justify-between items-center text-left';
+                    sessionItem.className = 'p-3 bg-slate-50 dark:bg-gray-800 rounded-lg flex justify-between items-center text-left';
                     const date = new Date(session.timestamp).toLocaleString();
                     sessionItem.innerHTML = `
-                        <p class="text-sm text-slate-700 overflow-hidden text-ellipsis whitespace-nowrap">${date}</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-200 overflow-hidden text-ellipsis whitespace-nowrap">${date} - ${session.time}s</p>
                         <button class="delete-session-button text-red-400 hover:text-red-600 transition-colors" data-index="${index}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -429,6 +616,8 @@
                     block.offsetHeight;
                     block.style.animation = null;
                 });
+                
+                orderedContainer.style.backgroundColor = '';
 
                 if (isCorrect) {
                     messageArea.textContent = "🥳 C'est parfait ! Les blocs s'emboîtent !";
@@ -439,7 +628,15 @@
                         block.classList.add('correct');
                     });
                     
-                    saveSession(correctPhrase.join(' '));
+                    orderedContainer.style.backgroundColor = '#dcfce7';
+
+                    const endTime = Date.now();
+                    const timeTaken = Math.floor((endTime - startTime) / 1000);
+                    clearInterval(timer);
+                    
+                    saveSession(correctPhrase.join(' '), timeTaken);
+                    scoreDisplay.textContent = `Vous avez résolu le puzzle en ${timeTaken} secondes !`;
+
                     triggerVictoryEffects();
                     victoryModal.classList.remove('hidden');
                     gameInterface.classList.add('hidden');
@@ -470,6 +667,7 @@
                     block.classList.add('scrambled-effect');
                 });
                 messageArea.classList.add('hidden');
+                orderedContainer.style.backgroundColor = '';
             });
 
             /**
@@ -499,6 +697,14 @@
                 mainMenu.classList.toggle('scale-0');
                 mainMenu.classList.toggle('scale-100');
             });
+
+            // Logique du bouton Recommencer
+            restartButton.addEventListener('click', () => {
+                inputArea.classList.remove('hide');
+                inputArea.classList.add('show');
+                gameInterface.classList.add('hide');
+                fixedButtonsBar.classList.add('hide');
+            });
             
             // Mise à jour de la variable de vibration
             vibrationToggle.addEventListener('change', (e) => {
@@ -507,7 +713,8 @@
 
             // Logique de la modale d'indice
             hintButton.addEventListener('click', () => {
-                hintText.textContent = correctPhrase.join(' ');
+                let fullText = correctPhrase.join(' ');
+                hintText.textContent = fullText;
                 hintModal.classList.remove('hidden');
                 mainMenu.classList.add('hidden');
             });
